@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # Load the trained model
 try:
-    model_path = 'RandomForestRegressor_price_prediction_model.pkl'
+    model_path = "C:\\Users\\CIVY VARGHESE\\OneDrive\\Desktop\\model\\models\\RandomForestRegressor_price_prediction_model.pkl"
     model = joblib.load(model_path)
     logging.info("Model loaded successfully.")
     if hasattr(model, 'feature_names_in_'):
@@ -19,6 +19,24 @@ except Exception as e:
     sys.exit("Failed to load model, please check the model path and file.")
 
 app = Flask(__name__)
+
+# Route for providing API information
+@app.route('/', methods=['GET'])
+def api_info():
+    """
+    Provide basic information about the API.
+    """
+    info = {
+        'name': 'Price Prediction API',
+        'description': 'An API for predicting product prices based on various features.',
+        'endpoints': {
+            '/predict_price': {
+                'method': 'POST',
+                'description': 'Predict the price of a product based on input features.'
+            }
+        }
+    }
+    return jsonify(info)
 
 @app.route('/predict_price', methods=['POST'])
 def predict_price():
